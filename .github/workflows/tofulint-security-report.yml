@@ -26,19 +26,7 @@ jobs:
           curl -s https://raw.githubusercontent.com/SoeldnerConsult/tofulint/master/install_linux.sh | bash
           # Ensure 'tofulint' is accessible on the PATH for subsequent steps
           echo "$HOME/.tofulint/bin" >> $GITHUB_PATH
-      
-      - name: Configure TofuLint Plugin (Workaround for Known Issue)
-        # Create the .tofulint.hcl file to manually enable the opentofu plugin
-        # as a fix for the "Broken Pre-bundled Installation" issue described.
-        run: |
-          cat <<EOF > .tofulint.hcl
-          plugin "opentofu" {
-            enabled = true
-            version = "0.0.9"
-            source = "github.com/SoeldnerConsult/tofulint-ruleset-opentofu"
-          }
-          EOF
-          
+
       - name: Run TofuLint
         id: tofulint-run
         # We run the linter recursively and specify the output format as 'sarif'.
