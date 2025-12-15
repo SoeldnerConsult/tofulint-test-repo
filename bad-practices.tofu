@@ -1,7 +1,3 @@
-variable "db_password" {
-  type    = string
-  default = "SuperSecret123!"
-}
 
 # Resource with no description or tags
 resource "aws_security_group" "no_tags" {
@@ -12,7 +8,6 @@ resource "aws_security_group" "no_tags" {
 
 # Unused local variable
 locals {
-  unused_value = "I am not used"
 }
 
 
