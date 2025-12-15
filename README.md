@@ -1,5 +1,6 @@
 # TofuLint CI/CD Integration Demo
 
+
 ## Project Overview
 
 This repository serves as a practical demonstration of integrating **[TofuLint](https://github.com/SoeldnerConsult/tofulint)** into a standard GitHub Actions workflow.
