@@ -1,6 +1,5 @@
 # TofuLint CI/CD Integration Demo
 
-
 ## Project Overview
 
 This repository serves as a practical demonstration of integrating **[TofuLint](https://github.com/SoeldnerConsult/tofulint)** into a standard GitHub Actions workflow.
@@ -25,6 +24,7 @@ The repository contains example `.tf` and `.tofu` files designed to trigger Tofu
 This project configures two separate workflows located in the `.github/workflows/` directory.
 
 ### 1\. Simple TofuLint Check
+[![Simple TofuLint Check](https://github.com/SoeldnerConsult/tofulint-test-repo/actions/workflows/simple-tofulint-check.yml/badge.svg)](https://github.com/SoeldnerConsult/tofulint-test-repo/actions/workflows/simple-tofulint-check.yml)
 
   * **File:** `.github/workflows/simple-tofulint-check.yml`
   * **Purpose:** To enforce a strict linting gate. If TofuLint finds any issues (by default, *error* severity issues will cause a non-zero exit code), the entire GitHub Actions job will **fail**.
@@ -41,6 +41,7 @@ This project configures two separate workflows located in the `.github/workflows
 | **Run TofuLint** | Executes the linter. | Runs `tofulint --recursive` to check all subdirectories. **Fails on any issue** that triggers a non-zero exit code. |
 
 ### 2\. TofuLint Security Reporting (SARIF)
+[![TofuLint Security Reporting](https://github.com/SoeldnerConsult/tofulint-test-repo/actions/workflows/tofulint-security-report.yml/badge.svg)](https://github.com/SoeldnerConsult/tofulint-test-repo/actions/workflows/tofulint-security-report.yml)
 
   * **File:** `.github/workflows/tofulint-security-reporting.yml`
   * **Purpose:** To report linter findings to a dedicated security dashboard without necessarily failing the main branch protection checks.
