@@ -1,0 +1,61 @@
+name: TofuLint
+
+on:
+  # Triggers the workflow on push and pull request events
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  tofulint:
+    # Use a Linux runner as the installation script is for Linux
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Install TofuLint
+        # Use the official installation script provided in the documentation
+        run: |
+          curl -s https://raw.githubusercontent.com/SoeldnerConsult/tofulint/master/install_linux.sh | bash
+          # Ensure 'tofulint' is accessible on the PATH for subsequent steps
+          echo "$HOME/.tofulint/bin" >> $GITHUB_PATH
+      
+      - name: Configure TofuLint Plugin (Workaround for Known Issue)
+        # Create the .tofulint.hcl file to manually enable the opentofu plugin
+        # as a fix for the "Broken Pre-bundled Installation" issue described.
+        run: |
+          cat <<EOF > .tofulint.hcl
+          plugin "opentofu" {
+            enabled = true
+            version = "0.0.9"
+            source = "github.com/SoeldnerConsult/tofulint-ruleset-opentofu"
+          }
+          EOF
+          
+      - name: Run TofuLint
+        id: tofulint-run
+        # We run the linter recursively and specify the output format as 'sarif'.
+        # The 'sarif' format is standard for GitHub Code Scanning and is recommended 
+        # for reporting issues in GitHub Actions. We also use '--force' 
+        # to ensure the step doesn't fail immediately, allowing us to upload results.
+        run: |
+          tofulint --recursive --format=sarif --output=tofulint-results.sarif --force
+        # If your project uses subdirectories, you might need to adjust the 
+        # '--chdir' or 'working-directory' options, but '--recursive' 
+        # should cover most standard monorepos.
+
+      - name: Upload SARIF Report to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: tofulint-results.sarif
+          # This step integrates the TofuLint findings directly into the 
+          # GitHub Security tab for better visibility.
