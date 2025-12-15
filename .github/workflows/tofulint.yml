@@ -48,6 +48,7 @@ jobs:
         # for reporting issues in GitHub Actions. We also use '--force' 
         # to ensure the step doesn't fail immediately, allowing us to upload results.
         run: |
+          tofulint --init
           tofulint --recursive --format=sarif --force > tofulint-results.sarif
         # If your project uses subdirectories, you might need to adjust the 
         # '--chdir' or 'working-directory' options, but '--recursive' 
